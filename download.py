@@ -23,11 +23,18 @@ class Downloader:
                 break
 
     def download_wait4file(self, url, name, dir_, timeout=None):
+        def check_exist(d, n):
+            for i in os.listdir(d):
+                if n in i:
+                    return True
+            return False
+
         start_time = time.time()
+        if check_exist(dir_, name):
+            return True
         self.download(url, name, dir_)
-        full_path = os.path.join(dir_, name)
         while timeout is None or time.time() - start_time < timeout:
-            if os.path.exists(full_path):
+            if check_exist(dir_, name):
                 return True
             else:
                 time.sleep(1)
