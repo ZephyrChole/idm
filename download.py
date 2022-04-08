@@ -3,6 +3,22 @@ import subprocess as sp
 import time
 
 
+def check_path(dir_path):
+    if os.path.exists(dir_path) and os.path.isdir(dir_path):
+        return True
+    else:
+        path = os.path.split(dir_path)[0]
+        if check_path(path):
+            try:
+                os.mkdir(dir_path)
+            except FileExistsError:
+                return False
+            except OSError:
+                return False
+        else:
+            return False
+
+
 class Downloader:
     def __init__(self, idm_path):
         self.idm_path = idm_path
@@ -29,6 +45,7 @@ class Downloader:
                     return True
             return False
 
+        check_path(dir_)
         start_time = time.time()
         if check_exist(dir_, name):
             return True
