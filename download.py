@@ -48,6 +48,7 @@ class Downloader:
         check_path(dir_)
         start_time = time.time()
         if check_exist(dir_, name):
+            print(f'{name} skipped')
             return True
         self.download(url, name, dir_)
         while timeout is None or time.time() - start_time < timeout:
